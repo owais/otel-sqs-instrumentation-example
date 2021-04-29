@@ -15,17 +15,16 @@ sqs.receiveMessage(params, function(err, data) {
     console.log(err, err.stack); // an error occurred
   } else  {
     if (data.Messages && data.Messages.length >0) {
-      console.log(data);           // successful response
-      sqs.deleteMessage({
-        QueueUrl: queueUrl,
-        ReceiptHandle: data.Messages[0].ReceiptHandle
-      }, function(err, data) {
-        if (err) {
-          console.log("Delete Error", err);
-        } else {
-          console.log("Message Deleted", data);
-        }
-      })
+      data.Messages.forEach(msg => {
+        sqs.deleteMessage({
+          QueueUrl: queueUrl,
+          ReceiptHandle: msg.ReceiptHandle
+        }, function(err, data) {
+          if (err) {
+            console.log("Delete Error", err);
+          }
+        })
+      });
     }
   } 
 })
