@@ -1,4 +1,4 @@
-require("./tracing").setupTracing("svc-consumer");
+const api = require("./tracing").setupTracing("svc-consumer");
 
 var AWS = require("aws-sdk");
 
@@ -14,6 +14,7 @@ sqs.receiveMessage(params, function(err, data) {
   if (err) {
     console.log(err, err.stack); // an error occurred
   } else  {
+    //const api = require("./tracing").setupTracing("svc-consumer");
     if (data.Messages && data.Messages.length >0) {
       data.Messages.forEach(msg => {
         sqs.deleteMessage({

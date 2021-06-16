@@ -1,4 +1,4 @@
-require("./tracing").setupTracing("svc-producer");
+const api = require("./tracing").setupTracing("svc-producer");
 
 var AWS = require("aws-sdk");
 
