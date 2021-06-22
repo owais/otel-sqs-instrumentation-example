@@ -6,7 +6,7 @@ var sqs = new AWS.SQS({apiVersion: '2012-11-05', region: "us-west-2"});
 
 var params = {
   QueueUrl: 'http://localhost:4566/000000000000/test-queue',
-  MessageBody: 'STRING_VALUE', 
+  MessageBody: 'this is body value', 
   MessageAttributes: {
     'my-attr': {
       DataType: 'String',
