@@ -2,7 +2,8 @@ const api = require("./tracing").setupTracing("svc-consumer", false);
 var AWS = require("aws-sdk");
 
 var sqs = new AWS.SQS({apiVersion: '2012-11-05', region: "us-west-2"});
-var queueUrl ='http://localhost:4566/000000000000/test-queue';
+var queueName = "test-queue";
+var queueUrl ='http://localhost:4566/000000000000/' + queueName;
 
 class SqsContextGetter {
   keys(carrier) {
@@ -34,6 +35,10 @@ function receive() {
               const span = tracer.startSpan("sqs.process", {
                 kind: api.SpanKind.CONSUMER,
               })
+              span.setAttribute("messaging.system", "aws.sqs")
+              span.setAttribute("messaging.destination_kind", "queue")
+              span.setAttribute("messaging.destination", queueName)
+              span.setAttribute("messaging.url", queueUrl)
               sqs.deleteMessage({
                 QueueUrl: queueUrl,
                 ReceiptHandle: msg.ReceiptHandle
